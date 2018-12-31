@@ -1,0 +1,28 @@
+body{
+  max-width: 1000px;
+  margin: auto;
+  font-family: 'Open Sans', sans-serif;
+}
+
+#address-input{
+  width: 300px;
+}
+
+#results{
+  margin-bottom: 30px;
+}
+
+.official-name{
+  margin-bottom: 5px;
+}
+
+.official-title{
+  margin-top: 0;
+  color: grey;
+}
+
+@media (max-width: 1000px){
+  body{
+    margin: 10px;
+  }
+}
