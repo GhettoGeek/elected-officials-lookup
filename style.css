@@ -16,6 +16,7 @@ body{
   margin-bottom: 5px;
 }
 
+#description,
 .official-title{
   margin-top: 0;
   color: grey;
