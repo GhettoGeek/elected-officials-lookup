@@ -62,7 +62,7 @@ function getYouTubeVideos(query, maxResults=3) {
 
   const params = {
     key: KEY,
-    q: query,
+    q: query+" news",
     part: 'snippet',
     maxResults,
     type: 'video',
@@ -85,6 +85,11 @@ function getYouTubeVideos(query, maxResults=3) {
 }
 
 function displayYouTubeResults(responseJson) {
+  if(responseJson.items.length==0){
+    $('.selected').append(`
+      <p class="no-videos-found"><em>Sorry, no news videos found for this elected official.</em></p>
+    `);
+  }
   responseJson.items.forEach(function(item){
     $('.selected').append(
       `<li><a href="https://www.youtube.com/watch?v=${item.id.videoId}" target="_blank">${item.snippet.title}</a></li>`
@@ -106,7 +111,7 @@ function watchCaret(){
 }
 
 function addVideoClips(){
-  $('section').slice(0, 8).append(`
+  $('section').append(`
     <h3>Video clips of this official <span class="caret">▼</span></h3>
     <ul></ul>
   `);

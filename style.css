@@ -25,9 +25,12 @@ body{
   font-size: 12px;
 }
 
-ul,
-#phantom{
+ul{
   display: none;
+}
+
+.no-videos-found{
+  margin-left: -40px;
 }
 
 @media (max-width: 1000px){
