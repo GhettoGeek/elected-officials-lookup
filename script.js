@@ -37,9 +37,6 @@ let generateResultHtml=result=>{
         ${address}
         ${phoneNumbers}
         ${emails}
-        <h3>Video clips of this official:</h3>
-        <ul><li>Clip</li><li>Clip</li><li>Clip</li></ul>
-        <hr>
       </section>
     `;
 }
@@ -54,7 +51,69 @@ let formatOfficialTitles=offices=>{
  return indexedOffices;
 }
 
-let displayResults=results=>{
+function formatQueryParams(params) {
+  const queryItems = Object.keys(params)
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+  return queryItems.join('&');
+}
+
+function getYouTubeVideos(query, maxResults=3) {
+  const searchURL = 'https://www.googleapis.com/youtube/v3/search';
+
+  const params = {
+    key: KEY,
+    q: query,
+    part: 'snippet',
+    maxResults,
+    type: 'video',
+    order: 'date'
+  };
+  const queryString = formatQueryParams(params)
+  const url = searchURL + '?' + queryString;
+
+  fetch(url)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error(response.statusText);
+    })
+    .then(responseJson => displayYouTubeResults(responseJson))
+    .catch(err => {
+      $('#js-error-message').text(`Something went wrong: ${err.message}`);
+    });
+}
+
+function displayYouTubeResults(responseJson) {
+  responseJson.items.forEach(function(item){
+    $('.selected').append(
+      `<li><a href="https://www.youtube.com/watch?v=${item.id.videoId}" target="_blank">${item.snippet.title}</a></li>`
+    );
+  });
+};
+
+function watchCaret(){
+  $('.caret').unbind().click(function(e){
+    
+    $('ul').removeClass('selected');
+    $(this).parent('h3').next().show().addClass('selected');
+
+    var official = $(this).parent('h3').parent().find('h1').text();
+    official = official.slice(0, official.length-10);
+    getYouTubeVideos(official);
+    $(this).remove();
+  });
+}
+
+function addVideoClips(){
+  $('section').slice(0, 8).append(`
+    <h3>Video clips of this official <span class="caret">▼</span></h3>
+    <ul></ul>
+  `);
+  $('section').append('<hr>');
+}
+
+let displayCivicInfoResults=results=>{
   results.officials.forEach(result=>{
     var html = generateResultHtml(result);
     $('#results').append(html);
@@ -64,9 +123,11 @@ let displayResults=results=>{
   $('section').each(function(i, section){
       $(this).find('h1').after(`<p class="official-title">${titles[i]}</p>`);    
   });
+  addVideoClips();
+  watchCaret();
 }
 
-let getData=url=>{
+let getCivicInfoData=url=>{
   fetch(url)
     .then(res=>{
       if (res.ok) {
@@ -74,13 +135,13 @@ let getData=url=>{
       }
       throw new Error(res.statusText);
     })
-    .then(resJson=>displayResults(resJson))
+    .then(resJson=>displayCivicInfoResults(resJson))
     .catch(err=> {
       alert(`Something went wrong: ${err.message}`);
     });
 }
 
-let generateUrl = searchTerm=>{
+let generateCivicInfoUrl =searchTerm=>{
   var address = searchTerm.split(' ').join('%20');
   return `https://www.googleapis.com/civicinfo/v2/representatives?key=${KEY}&address=${address}`;
 }
@@ -91,8 +152,8 @@ let watchForm=()=>{
     $('#results').empty();
 
     var searchTerm = $('#address-input').val();
-    var url = generateUrl(searchTerm);
-    getData(url);
+    var url = generateCivicInfoUrl(searchTerm);
+    getCivicInfoData(url);
   })
 }
 

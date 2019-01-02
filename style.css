@@ -21,6 +21,15 @@ body{
   color: grey;
 }
 
+.caret{
+  font-size: 12px;
+}
+
+ul,
+#phantom{
+  display: none;
+}
+
 @media (max-width: 1000px){
   body{
     margin: 10px;
