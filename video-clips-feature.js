@@ -13,7 +13,7 @@ function getYouTubeVideos(query, maxResults=3) {
     part: 'snippet',
     maxResults,
     type: 'video',
-    order: 'date'
+    order: 'viewCount'
   };
   const queryString = formatQueryParams(params)
   const url = searchURL + '?' + queryString;
