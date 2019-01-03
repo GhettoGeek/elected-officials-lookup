@@ -4,6 +4,10 @@ body{
   font-family: 'Open Sans', sans-serif;
 }
 
+header{
+  margin-bottom: 50px;
+}
+
 #address-input{
   width: 300px;
 }
@@ -28,6 +32,16 @@ body{
 
 ul{
   display: none;
+}
+
+p a,
+li a{
+  color: #36B1BF;
+  text-decoration: none;
+}
+p a:hover,
+li a:hover{
+  color:rgb(61, 153, 163);
 }
 
 .no-videos-found{
