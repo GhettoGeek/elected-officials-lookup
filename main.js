@@ -32,7 +32,7 @@ let generateResultHtml=result=>{
   var phoneNumbers = generatePhoneNumHtml(result.phones);
   var emails = generateEmailHtml(result.emails);
   return `
-      <section>
+      <section role="region">
         <h1 class="official-name">${result.name} (${result.party})</h1>
         ${address}
         ${phoneNumbers}
@@ -53,7 +53,7 @@ let formatOfficialTitles=offices=>{
 
 function addVideoClips(){
   $('section').append(`
-    <h3>Video clips of this official <span class="caret">▼</span></h3>
+    <h3>Video clips of this official <span class="caret" role="button">▼</span></h3>
     <ul></ul>
   `);
   $('section').append('<hr>');
