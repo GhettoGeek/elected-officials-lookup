@@ -9,7 +9,7 @@ Users enter their address and are given contact info for their elected officials
 ![app image representatives](https://imgur.com/C4POE0n.png)
 ![app image video links](https://imgur.com/C0AI2un.png)
 
-A summary section. This should have a concise explanation of what your app does. Try to frame this from the standpoint of what the user does, or what the app enables for the user.
+
 
 ## Technologies Used
 - HTML/CSS
