@@ -97,6 +97,9 @@ li a:hover{
   form.max-width-1000px{
     margin-top: 10px;
   }
+  #address-input{
+    width: 350px;
+  }
   section{
     margin-bottom: 15px;
   }
