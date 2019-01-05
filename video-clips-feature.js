@@ -4,9 +4,7 @@ function formatQueryParams(params) {
   return queryItems.join('&');
 }
 
-function getYouTubeVideos(query, maxResults=3) {
-  const searchURL = 'https://www.googleapis.com/youtube/v3/search';
-
+let generateYoutubeSearchUrl=(query, maxResults=3)=>{
   const params = {
     key: KEY,
     q: query+" news",
@@ -16,43 +14,49 @@ function getYouTubeVideos(query, maxResults=3) {
     order: 'viewCount'
   };
   const queryString = formatQueryParams(params)
-  const url = searchURL + '?' + queryString;
 
-  fetch(url)
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error(response.statusText);
-    })
-    .then(responseJson => displayYouTubeResults(responseJson))
-    .catch(err => {
-      $('#js-error-message').text(`Something went wrong: ${err.message}`);
-    });
+  return 'https://www.googleapis.com/youtube/v3/search?'+queryString;
 }
 
-function displayYouTubeResults(responseJson) {
+let displayYouTubeResults=responseJson=>{
   if(responseJson.items.length==0){
     $('.selected').append(`
       <p class="no-videos-found"><em>Sorry, no news videos found for this elected official.</em></p>
     `);
   }
-  responseJson.items.forEach(function(item){
+  responseJson.items.forEach(item=>{
     $('.selected').append(
       `<li><a href="https://www.youtube.com/watch?v=${item.id.videoId}" target="_blank">${item.snippet.title}</a></li>`
     );
   });
 };
 
-function watchCaret(){
+let getYoutubeVideos=url=>{
+  fetch(url)
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      throw new Error(res.statusText);
+    })
+    .then(resJson => displayYouTubeResults(resJson))
+    .catch(err => {
+      $('#js-error-message').text(`Something went wrong: ${err.message}`);
+    });
+}
+
+let watchVideoClipsLink=()=>{
   $('.caret').unbind().click(function(e){
     
     $('ul').removeClass('selected');
     $(this).parent('h3').next().show().addClass('selected');
 
     var official = $(this).parent('h3').parent().find('h1').text();
+    // remove political party to get name of the elected official.
     official = official.slice(0, official.length-10);
-    getYouTubeVideos(official);
+    var url = generateYoutubeSearchUrl(official);
+    getYoutubeVideos(url);
+    // remove caret/link to limit number of requests for youtube links.
     $(this).remove();
   });
 }

@@ -15,6 +15,7 @@ let generatePhoneNumHtml=phones=>{
   phones.forEach(phone=>{
     phonesHtml += phone + "<br>";
   });
+  // remove <br> from last phone# and close <p>.
   return phonesHtml.slice(0, phonesHtml.length-4)+"</p>";
 }
 
@@ -32,8 +33,8 @@ let generateResultHtml=result=>{
   var phoneNumbers = generatePhoneNumHtml(result.phones);
   var emails = generateEmailHtml(result.emails);
   return `
-      <section role="region">
-        <h1 class="official-name">${result.name} (${result.party})</h1>
+      <section role="region" tabindex="0">
+        <h1 class="official-name" >${result.name} (${result.party})</h1>
         ${address}
         ${phoneNumbers}
         ${emails}
@@ -41,7 +42,18 @@ let generateResultHtml=result=>{
     `;
 }
 
+let addVideoClipsUl=()=>{
+  $('section').append(`
+    <h3>Video clips of this official 
+      <span class="caret" role="link">▼</span>
+    </h3>
+    <ul aria-live="assertive"></ul>
+  `);
+}
+
+// return an array of official titles from result data. 
 let formatOfficialTitles=offices=>{
+  // titles indexed to match the order elected officials returned are in.
   var indexedOffices = [];
   offices.forEach(function(office){
     office.officialIndices.forEach(i=>{
@@ -51,12 +63,12 @@ let formatOfficialTitles=offices=>{
  return indexedOffices;
 }
 
-function addVideoClips(){
-  $('section').append(`
-    <h3>Video clips of this official <span class="caret" role="button">▼</span></h3>
-    <ul></ul>
-  `);
-  $('section').append('<hr>');
+let addOfficialTitles=offices=>{
+ var titles = formatOfficialTitles(offices);
+  $('section').each((i, section)=>{
+      // add official title after name of the elected official.
+      $(this).find('h1').after(`<p class="official-title">${titles[i]}</p>`);    
+  });
 }
 
 let displayCivicInfoResults=results=>{
@@ -65,12 +77,10 @@ let displayCivicInfoResults=results=>{
     $('#results').append(html);
   });
 
-  var titles = formatOfficialTitles(results.offices);
-  $('section').each(function(i, section){
-      $(this).find('h1').after(`<p class="official-title">${titles[i]}</p>`);    
-  });
-  addVideoClips();
-  watchCaret();
+  addOfficialTitles(results.offices);
+
+  addVideoClipsUl();
+  watchVideoClipsLink();
 }
 
 let getCivicInfoData=url=>{
