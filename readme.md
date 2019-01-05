@@ -1,7 +1,7 @@
 
 # Elected Officials Lookup
 
-[https://aaltamirano1.github.io/capstone-api-hack/]
+https://aaltamirano1.github.io/capstone-api-hack/
 
 Users enter their address and are given contact info for their elected officials using Google's Civic Info API. YouTube's API also provides video clips of the elected officials so citizens can learn about and contact their elected officials.
 
