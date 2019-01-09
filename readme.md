@@ -11,8 +11,3 @@ Users enter their address and are given contact info for their elected officials
 ![app image video links](https://imgur.com/C0AI2un.png)
 ---
 
-## Technologies Used
-- HTML/CSS
-- JavaScript
-- jQuery
-- fetch API
