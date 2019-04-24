@@ -29,9 +29,9 @@ let generateAddressHtml=address=>{
 }
 
 let generateResultHtml=result=>{
-  var address = generateAddressHtml(result.address[0]);
-  var phoneNumbers = generatePhoneNumHtml(result.phones);
-  var emails = generateEmailHtml(result.emails);
+  var address = result.address ? generateAddressHtml(result.address[0]) : "";
+  var phoneNumbers = result.phones ? generatePhoneNumHtml(result.phones) : "";
+  var emails = result.emails ? generateEmailHtml(result.emails): "";
   return `
       <section role="region" tabindex="0">
         <h1 class="official-name" >${result.name} (${result.party})</h1>
@@ -54,11 +54,13 @@ let addVideoClipsUl=()=>{
 let addOfficialTitles=offices=>{
   $('section').each((i, section)=>{
     // add official title after name of the elected official.
+    let html = "";
     offices.forEach(office=>{
       if(office.officialIndices.includes(i)){
-        $(this).find('h1').after(`<p class="official-title">${office.name}</p>`);    
+        html = `<p class="official-title">${office.name}</p>`;    
       }
     });
+    $(section).find('h1').after(html);
   });
 }
 
@@ -67,6 +69,7 @@ let displayCivicInfoResults=results=>{
     var html = generateResultHtml(result);
     $('#results').append(html);
   });
+  return results.offices;
 }
 
 let getCivicInfoData=url=>{
@@ -77,15 +80,16 @@ let getCivicInfoData=url=>{
       }
       throw new Error(res.statusText);
     })
-    .then(resJson=>{
-      displayCivicInfoResults(resJson)
-      return results.offices;
-    })
-    .then(offices=>{
-      addOfficialTitles(offices);
+    .then(resJson=>{ 
+      new Promise(function(fulfill, reject){
+       fulfill(displayCivicInfoResults(resJson));
+      })
+      .then(offices=>{
+        addOfficialTitles(offices);
 
-      addVideoClipsUl();
-      watchVideoClipsLink();
+        addVideoClipsUl();
+        watchVideoClipsLink();
+      });
     })
     .catch(err=> {
       alert(`Something went wrong: ${err.message}`);
