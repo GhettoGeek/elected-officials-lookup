@@ -29,7 +29,7 @@ let generateAddressHtml=address=>{
 }
 
 let official=result=>{
-  const heading = <h1 class="official-name" >${result.name} (${result.party})</h1>
+  const heading = `<h1 class="official-name" >${result.name} (${result.party})</h1>`;
   
    result.officials.forEach((official, i)=>{        
     result.offices.forEach(office=>{
