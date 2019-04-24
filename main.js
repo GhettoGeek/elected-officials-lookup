@@ -28,13 +28,28 @@ let generateAddressHtml=address=>{
     </p>`;
 }
 
+let official=result=>{
+  const heading = <h1 class="official-name" >${result.name} (${result.party})</h1>
+  
+   result.officials.forEach((official, i)=>{        
+    result.offices.forEach(office=>{
+      if(office.officialIndices.includes(i)){
+        heading += `<p class="official-title">${office.name}</p>`;
+      }
+    });
+  }); 
+  
+  return heading;
+}
+
 let generateResultHtml=result=>{
+  var official = official(result);
   var address = generateAddressHtml(result.address[0]);
   var phoneNumbers = generatePhoneNumHtml(result.phones);
   var emails = generateEmailHtml(result.emails);
   return `
       <section role="region" tabindex="0">
-        <h1 class="official-name" >${result.name} (${result.party})</h1>
+        ${official}
         ${address}
         ${phoneNumbers}
         ${emails}
@@ -51,34 +66,11 @@ let addVideoClipsUl=()=>{
   `);
 }
 
-// return an array of official titles from result data. 
-let formatOfficialTitles=offices=>{
-  // titles indexed to match the order elected officials returned are in.
-  var indexedOffices = [];
-  offices.forEach(function(office){
-    office.officialIndices.forEach(i=>{
-      indexedOffices[i] = office.name;
-    });
-  });
- return indexedOffices;
-}
-
-let addOfficialTitles=offices=>{
- var titles = formatOfficialTitles(offices);
-  $('section').each((i, section)=>{
-      // add official title after name of the elected official.
-      $(this).find('h1').after(`<p class="official-title">${titles[i]}</p>`);    
-  });
-}
-
 let displayCivicInfoResults=results=>{
   results.officials.forEach(result=>{
     var html = generateResultHtml(result);
     $('#results').append(html);
   });
-
-  addOfficialTitles(results.offices);
-
   addVideoClipsUl();
   watchVideoClipsLink();
 }
