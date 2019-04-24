@@ -16,6 +16,11 @@ header{
   background-color: white;
 }
 
+#description{
+  margin-top: 0;
+  color: grey;
+}
+
 form{
   margin-top: 10px;
 }
@@ -50,15 +55,17 @@ section{
   margin-bottom: 5px;
 }
 
-#description,
 .official-title{
-  margin-top: 0;
-  color: grey;
+  margin: 0;
+  font-weight: bold;
+  color: #d64541;
+  margin-bottom: 25px;
 }
 
 .caret{
   font-size: 14px;
 }
+
 .caret:hover{
   color: #FC3C3C;
 }
