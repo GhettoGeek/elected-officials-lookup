@@ -57,7 +57,7 @@ let addOfficialTitles=offices=>{
     let html = "";
     offices.forEach(office=>{
       if(office.officialIndices.includes(i)){
-        html = `<p class="official-title">${office.name}</p>`;    
+        html = `<h3 class="official-title">${office.name}</h3>`;    
       }
     });
     $(section).find('h1').after(html);
