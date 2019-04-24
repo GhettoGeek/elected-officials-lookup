@@ -67,11 +67,6 @@ let displayCivicInfoResults=results=>{
     var html = generateResultHtml(result);
     $('#results').append(html);
   });
-
-  addOfficialTitles(results.offices);
-
-  addVideoClipsUl();
-  watchVideoClipsLink();
 }
 
 let getCivicInfoData=url=>{
@@ -82,7 +77,16 @@ let getCivicInfoData=url=>{
       }
       throw new Error(res.statusText);
     })
-    .then(resJson=>displayCivicInfoResults(resJson))
+    .then(resJson=>{
+      displayCivicInfoResults(resJson)
+      return results.offices;
+    })
+    .then(offices=>{
+      addOfficialTitles(offices);
+
+      addVideoClipsUl();
+      watchVideoClipsLink();
+    })
     .catch(err=> {
       alert(`Something went wrong: ${err.message}`);
     });
