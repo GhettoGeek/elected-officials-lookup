@@ -28,28 +28,13 @@ let generateAddressHtml=address=>{
     </p>`;
 }
 
-let official=result=>{
-  const heading = `<h1 class="official-name" >${result.name} (${result.party})</h1>`;
-  
-   result.officials.forEach((official, i)=>{        
-    result.offices.forEach(office=>{
-      if(office.officialIndices.includes(i)){
-        heading += `<p class="official-title">${office.name}</p>`;
-      }
-    });
-  }); 
-  
-  return heading;
-}
-
 let generateResultHtml=result=>{
-  var official = official(result);
   var address = generateAddressHtml(result.address[0]);
   var phoneNumbers = generatePhoneNumHtml(result.phones);
   var emails = generateEmailHtml(result.emails);
   return `
       <section role="region" tabindex="0">
-        ${official}
+        <h1 class="official-name" >${result.name} (${result.party})</h1>
         ${address}
         ${phoneNumbers}
         ${emails}
@@ -66,11 +51,25 @@ let addVideoClipsUl=()=>{
   `);
 }
 
+let addOfficialTitles=offices=>{
+  $('section').each((i, section)=>{
+    // add official title after name of the elected official.
+    offices.forEach(office=>{
+      if(office.officialIndices.includes(i)){
+        $(this).find('h1').after(`<p class="official-title">${office.name}</p>`);    
+      }
+    });
+  });
+}
+
 let displayCivicInfoResults=results=>{
   results.officials.forEach(result=>{
     var html = generateResultHtml(result);
     $('#results').append(html);
   });
+
+  addOfficialTitles(results.offices);
+
   addVideoClipsUl();
   watchVideoClipsLink();
 }
