@@ -90,9 +90,6 @@ li a:hover{
 }
 
 @media (min-width: 1000px){
-  header{
-    width: 100vw;
-  }
   header h1{
     font-size: 1.7em;
   }
