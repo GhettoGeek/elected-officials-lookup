@@ -1,7 +1,7 @@
 const KEY = "AIzaSyDDDElzfQpUogHXhouEu1NWH4CPRPeOPTg";
 
 let generateEmailHtml=emails=>{
-  var emailsHtml = "";
+  let emailsHtml = "";
   if(emails){
     emails.forEach(email=>{
       emailsHtml += `<p><a href="mailto: ${email}">${email}</a></p>`
@@ -11,7 +11,7 @@ let generateEmailHtml=emails=>{
 }
 
 let generatePhoneNumHtml=phones=>{
-  var phonesHtml = "<p>";
+  let phonesHtml = "<p>";
   phones.forEach(phone=>{
     phonesHtml += phone + "<br>";
   });
@@ -29,12 +29,15 @@ let generateAddressHtml=address=>{
 }
 
 let generateResultHtml=result=>{
-  var address = result.address ? generateAddressHtml(result.address[0]) : "";
-  var phoneNumbers = result.phones ? generatePhoneNumHtml(result.phones) : "";
-  var emails = result.emails ? generateEmailHtml(result.emails): "";
+  const address = result.address ? generateAddressHtml(result.address[0]) : "";
+  const phoneNumbers = result.phones ? generatePhoneNumHtml(result.phones) : "";
+  const emails = result.emails ? generateEmailHtml(result.emails): "";
+  
+  const party = result.party ? result.party : "";
+  
   return `
       <section role="region" tabindex="0">
-        <h1 class="official-name" >${result.name} (${result.party})</h1>
+        <h1 class="official-name" >${result.name} (${party})</h1>
         ${address}
         ${phoneNumbers}
         ${emails}
@@ -66,7 +69,7 @@ let addOfficialTitles=offices=>{
 
 let displayCivicInfoResults=results=>{
   results.officials.forEach(result=>{
-    var html = generateResultHtml(result);
+    const html = generateResultHtml(result);
     $('#results').append(html);
   });
   return results.offices;
