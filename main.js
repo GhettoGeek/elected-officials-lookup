@@ -33,11 +33,11 @@ let generateResultHtml=result=>{
   const phoneNumbers = result.phones ? generatePhoneNumHtml(result.phones) : "";
   const emails = result.emails ? generateEmailHtml(result.emails): "";
   
-  const party = result.party ? result.party : "";
+  const party = result.party ? "("+result.party+")" : "";
   
   return `
       <section role="region" tabindex="0">
-        <h1 class="official-name" >${result.name} (${party})</h1>
+        <h1 class="official-name" >${result.name} ${party}</h1>
         ${address}
         ${phoneNumbers}
         ${emails}
