@@ -1,4 +1,4 @@
-const KEY = "AIzaSyDDDElzfQpUogHXhouEu1NWH4CPRPeOPTg";
+const KEY = "AIzaSyB6b_kTWWv_gLUvv49CspHkRJpTKsDcB_k";
 
 let generateEmailHtml=emails=>{
   let emailsHtml = "";
